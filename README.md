@@ -40,3 +40,7 @@ cd ~/CPLEX_Studio129/cplex/python/3.10/x86-64_linux
 ```bash
 python setup.py install
 ```
+# Install docplex 
+```bash
+pip install docplex
+```
