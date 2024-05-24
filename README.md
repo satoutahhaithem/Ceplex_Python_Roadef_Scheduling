@@ -18,11 +18,11 @@ sudo apt install python3.10 python3.10-venv python3.10-dev
 ```
 # Step 2: Create a new virtual environment
 ```bash
-python3.10 -m venv ~/myenv3.10
+python3.10 -m venv ./myenv3.10CeplexNewVersion
 ```
 # Step 3: Activate the virtual environment
 ```bash
-source ~/myenv3.10/bin/activate
+source ./myenv3.10CeplexNewVersion/bin/activate
 ```
 # Step 4: Verify the Python version
 ```bash
@@ -34,7 +34,7 @@ sudo apt install python3.10-distutils
 ```
 # Step 6: Navigate to the CPLEX Python API directory
 ```bash
-cd ~/CPLEX_Studio129/cplex/python/3.10/x86-64_linux
+cd /home/mis/Bureau/ceplex_installation/cplex/python/3.10/x86-64_linux
 ```
 # Step 7: Install the CPLEX Python API
 ```bash
