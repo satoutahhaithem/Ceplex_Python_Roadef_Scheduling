@@ -72,7 +72,7 @@ if len(sys.argv) < 1:
 data_set_choice = sys.argv[1]
 
 # recover the second parameter 
-max_parallel_sessions = 10 
+max_parallel_sessions =  int(sys.argv[2])
 
 if data_set_choice == "2024":
     if (max_parallel_sessions < 0 ): 
