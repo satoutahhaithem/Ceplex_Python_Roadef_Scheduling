@@ -1,21 +1,25 @@
 #!/bin/bash
 
 # Define the timeout duration (if needed)
-timeout_duration="60s"
+timeout_duration="10s"
 
-# Base directories
-base_output_dir="/media/haithem-sattoutah/haithem/Ceplex_Roadef_Scheduling/outputsCeplex"
-base_time_dir="/media/haithem-sattoutah/haithem/Ceplex_Roadef_Scheduling/TimeSolvingCeplex"
+# Base directories Pc Heythem
+base_output_dir="./outputsCeplexPcHeythem"
+base_time_dir="./TimeSolvingCeplexPcHeythem"
+# Base directories Pc Mis
+# base_output_dir="./outputsCeplex"
+# base_time_dir="./TimeSolvingCeplex"
+
 
 # Iterate over the years
 for yearRodef in {2024..2021}; do
     output_dir="${base_output_dir}/${yearRodef}"
     time_dir="${base_time_dir}/${yearRodef}"
     
-    max_parallel_sessions_range_2024=($(seq 15 -1 10))
-    max_parallel_sessions_range_2023=($(seq 18 -1 13))
-    max_parallel_sessions_range_2022=($(seq 16 -1 11))
-    max_parallel_sessions_range_2021=($(seq 10 -1 5))
+    max_parallel_sessions_range_2024=($(seq 15 -1 9))
+    max_parallel_sessions_range_2023=($(seq 18 -1 11))
+    max_parallel_sessions_range_2022=($(seq 16 -1 10))
+    max_parallel_sessions_range_2021=($(seq 10 -1 4))
 
     case $yearRodef in
         2024)
@@ -35,9 +39,6 @@ for yearRodef in {2024..2021}; do
             exit 1
     esac
 
-    # Create directories if they do not exist
-    mkdir -p "$output_dir"
-    mkdir -p "$time_dir"
 
     # All the instances of one year
     for max_parallel_sessions in "${max_parallel_sessions_range[@]}"; do
@@ -45,7 +46,7 @@ for yearRodef in {2024..2021}; do
         time_file="${time_dir}/${max_parallel_sessions}_session_time.txt"
 
         {
-            time timeout "$timeout_duration" python3 /media/haithem-sattoutah/haithem/Ceplex_Roadef_Scheduling/main.py "$yearRodef" "$max_parallel_sessions" > "$output_file"
+            time timeout --signal=INT "$timeout_duration" python3 ./main.py "$yearRodef" "$max_parallel_sessions" > "$output_file"
         } 2> "$time_file"
     done
 

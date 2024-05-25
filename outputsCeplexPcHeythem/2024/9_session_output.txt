@@ -1,0 +1,5 @@
+max_parallel_sessions =  9
+No feasible solution found.
+Showing some of the constraints that can be removed to arrive at a minimal conflict:
+conflicts: 2034
+  - linear constraints: 2034

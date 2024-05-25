@@ -186,7 +186,7 @@ def display_assignments_by_slot_with_counts(model, slots, papers_range, conferen
             for l in PaperRangeIndex:
                 if x[s, c, l].solution_value > 0:  # Check if the variable is assigned
                     print(f"  Conference Session {s} in slot {c} with {papers_range[l-1]} papers")
-print (max_parallel_sessions)
+print ("max_parallel_sessions = " , max_parallel_sessions)
 if solution:
     print (solution)
     # The problem is feasible, display the solution
