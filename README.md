@@ -32,9 +32,11 @@ python --version  # Should output Python 3.10.x
 ```bash
 sudo apt install python3.10-distutils
 ```
+
 # Step 6: Navigate to the CPLEX Python API directory
+install ceplex from this link : [text](https://www.ibm.com/products/ilog-cplex-optimization-studio)
 ```bash
-cd /home/mis/Bureau/ceplex_installation/cplex/python/3.10/x86-64_linux
+cd /home/haithem-sattoutah/Ceplex_installation/cplex/python/3.10/x86-64_linux
 ```
 # Step 7: Install the CPLEX Python API
 ```bash

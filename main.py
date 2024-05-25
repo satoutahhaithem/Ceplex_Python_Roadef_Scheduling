@@ -192,9 +192,9 @@ if solution:
     # The problem is feasible, display the solution
     # display_assignments_by_slot_with_counts(solution, slots, papers_range, conference_sessions)
     # Print the number of conflicts
-    print(solution)
+    # print(solution)
     total_conflicts = num_conflicts.solution_value
-    # print(f"Total number of conflicts: {total_conflicts}")
+    print(f"Total number of conflicts: {total_conflicts}")
 else:
     print("No feasible solution found.")
     # Check if the model is infeasible and use conflict refiner to identify conflicts
