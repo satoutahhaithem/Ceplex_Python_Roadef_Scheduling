@@ -65,7 +65,7 @@ sudo apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libns
 
    ```
 ## Extract the downloaded file:
-    ```sh
+   ```sh
     tar -xf Python-3.10.0.tgz
    ```   
 ## Navigate to the extracted directory:
