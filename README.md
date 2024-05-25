@@ -44,3 +44,78 @@ python setup.py install
 ```bash
 pip install docplex
 ```
+
+# If you can't install python3.10 follow this Steps
+To ensure that the `python` and `python3` commands run Python 3.10 by default, follow these steps:
+
+## Step 1: Install Python 3.10 from Source
+
+1. **Update package lists:**
+   ```sh
+   sudo apt update
+   ```
+## Install the required dependencies
+```sh
+sudo apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev curl libbz2-dev
+```
+
+## Download the Python 3.10 source code:
+   ```sh
+   curl -O https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz
+
+   ```
+## Extract the downloaded file:
+    ```sh
+    tar -xf Python-3.10.0.tgz
+   ```   
+## Navigate to the extracted directory:
+   ```sh
+   cd Python-3.10.0
+
+   ```  
+## Navigate to the extracted directory:
+  ```sh
+   cd Python-3.10.0
+
+   ```   
+   ## Configure the build environment:
+   
+   ```sh
+   ./configure --enable-optimizations
+   ```
+   ## Build and install Python:
+   ```sh
+   make -j $(nproc)
+  sudo make altinstall
+
+   ```
+   ## Verify Python 3.10 installation:
+      
+   ```sh
+   /usr/local/bin/python3.10 --version
+   ```   
+
+   # Step 2: Set Python 3.10 as the Default Version
+   ## Add Python 3.10 to the alternatives system:
+   ```sh
+    sudo update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.10 1
+    sudo update-alternatives --install /usr/bin/python python /usr/local/bin/python3.10 1
+   ```   
+   ## Update the default Python version:
+   ```sh
+   sudo update-alternatives --config python3
+   sudo update-alternatives --config python
+   ```   
+   ## Create symlinks (if necessary):
+   ```sh
+    sudo rm /usr/bin/python
+    sudo rm /usr/bin/python3
+    sudo ln -s /usr/local/bin/python3.10 /usr/bin/python
+    sudo ln -s /usr/local/bin/python3.10 /usr/bin/python3
+   ```
+   ## Verify the default Python version:
+   ```sh
+   python --version
+   python3 --version
+
+   ```
