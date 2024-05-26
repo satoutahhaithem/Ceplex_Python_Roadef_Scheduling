@@ -1,4 +1,4 @@
-max_parallel_sessions =  9
+max_parallel_sessions = 9
 solution for: docplex_model1
 objective: 0
 status: OPTIMAL_SOLUTION(2)
