@@ -1,0 +1,5 @@
+./solveWithCeplex.sh : ligne 139 : 1088926 Processus arrêté      timeout --signal=INT "$timeout_duration" python3 ./main.py "$yearRodef" "$max_parallel_sessions" 0 > "$output_file"
+
+real	32m42,834s
+user	181m48,499s
+sys	17m6,019s
