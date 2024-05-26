@@ -16,14 +16,14 @@ max_parallel_sessions = int(sys.argv[2])
 isWithZ = int(sys.argv[3]) if len(sys.argv) > 3 else 1
 
 if data_set_choice == "2024":
-    if max_parallel_sessions < 9:
+    if max_parallel_sessions < 10:
         print("max_parallel_sessions must be more than 9")
         sys.exit(1)
     else:
         from Data.ROADEF2024 import conference_sessions, slots, papers_range, working_groups, np, npMax, session_groups
 elif data_set_choice == "2023":
     if max_parallel_sessions < 12:
-        print("max_parallel_sessions must be more than 12")
+        print("max_parallel_sessions must be more than 11")
         sys.exit(1)
     else:
         from Data.ROADEF2023 import conference_sessions, slots, papers_range, working_groups, np, npMax, session_groups
