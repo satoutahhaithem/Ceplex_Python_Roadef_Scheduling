@@ -4,11 +4,11 @@
 timeout_duration="3600s"
 
 # Base directories Pc Heythem
-base_output_dir="./outputsCeplexPcHeythem"
-base_time_dir="./TimeSolvingCeplexPcHeythem"
+# base_output_dir="./outputsCeplexPcHeythem"
+# base_time_dir="./TimeSolvingCeplexPcHeythem"
 # Base directories Pc Mis
-# base_output_dir="./outputsCeplex"
-# base_time_dir="./TimeSolvingCeplex"
+base_output_dir="./outputsCeplex"
+base_time_dir="./TimeSolvingCeplex"
 
 
 # Iterate over the years
@@ -54,25 +54,25 @@ for yearRodef in {2024..2021}; do
 done
 
 # Define the years and corresponding max parallel sessions
-# years=("2024" "2023" "2022" "2021")
-# sessions=("9" "11" "10" "4")
+years=("2024" "2023" "2022" "2021")
+sessions=("9" "11" "10" "4")
 
-# # Loop through each year and session
-# for i in ${!years[@]}; do
-#     yearRodef=${years[$i]}
-#     max_parallel_sessions=${sessions[$i]}
+# Loop through each year and session
+for i in ${!years[@]}; do
+    yearRodef=${years[$i]}
+    max_parallel_sessions=${sessions[$i]}
     
-#     output_dir="${base_output_dir}/${yearRodef}"
-#     time_dir="${base_time_dir}/${yearRodef}"
+    output_dir="${base_output_dir}/${yearRodef}"
+    time_dir="${base_time_dir}/${yearRodef}"
     
 
 
-#     output_file="${output_dir}/${max_parallel_sessions}_session_output.txt"
-#     time_file="${time_dir}/${max_parallel_sessions}_session_time.txt"
+    output_file="${output_dir}/${max_parallel_sessions}_session_output.txt"
+    time_file="${time_dir}/${max_parallel_sessions}_session_time.txt"
 
-#     {
-#         time timeout --signal=INT "$timeout_duration" python3 ./main.py "$yearRodef" "$max_parallel_sessions" > "$output_file"
-#     } 2> "$time_file"
-# done
+    {
+        time timeout --signal=INT "$timeout_duration" python3 ./main.py "$yearRodef" "$max_parallel_sessions" > "$output_file"
+    } 2> "$time_file"
+done
 
-# echo "Execution times and outputs for all specified years recorded in respective files."
+echo "Execution times and outputs for all specified years recorded in respective files."
