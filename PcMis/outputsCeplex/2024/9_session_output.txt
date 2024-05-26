@@ -1,1 +1,5 @@
-max_parallel_sessions must be more than 9
+max_parallel_sessions = 9
+No feasible solution found.
+Showing some of the constraints that can be removed to arrive at a minimal conflict:
+conflicts: 773
+  - linear constraints: 773
