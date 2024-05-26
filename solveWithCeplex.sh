@@ -98,8 +98,8 @@ echo "Execution times and outputs for all specified years recorded in respective
 # base_output_dir_without_z="./PcHeythem/WithoutZoutputsCeplexPcHeythem"
 # base_time_dir_without_z="./PcHeythem/WithoutZTimeSolvingCeplexPcHeythem"
 # Base directories Pc Mis
-base_output_dir_without_z="./PcMis/outputsCeplexWithoutZ"
-base_time_dir_without_z="./PcMis/TimeSolvingCeplexWithoutZ"
+base_output_dir_without_z="./PcMis/WithoutZoutputsCeplex"
+base_time_dir_without_z="./PcMis/WithoutZTimeSolvingCeplex"
 
 
 for yearRodef in {2024..2021}; do
