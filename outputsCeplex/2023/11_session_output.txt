@@ -1,5 +1,5 @@
-max_parallel_sessions =  9
+max_parallel_sessions =  11
 No feasible solution found.
 Showing some of the constraints that can be removed to arrive at a minimal conflict:
-conflicts: 771
-  - linear constraints: 771
+conflicts: 958
+  - linear constraints: 958
