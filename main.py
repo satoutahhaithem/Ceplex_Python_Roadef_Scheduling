@@ -2,40 +2,43 @@ from docplex.mp.model import Model
 import sys
 import docplex.mp.conflict_refiner as cr
 
-if len(sys.argv) < 1:
-    print("You must specify the year and maxparrallel session as a parameter (e.g., python3 Scheduling_Problem.py 2024 11)")
+if len(sys.argv) < 3:
+    print("You must specify the year, max parallel sessions, and optionally whether to use variable z as parameters (e.g., python3 Scheduling_Problem.py 2024 11 1)")
     sys.exit(1)
 
 # Recover the first argument
 data_set_choice = sys.argv[1]
 
-# Recover the second parameter 
-max_parallel_sessions =  int(sys.argv[2])
+# Recover the second parameter
+max_parallel_sessions = int(sys.argv[2])
+
+# Recover the third parameter (whether to use variable z)
+isWithZ = int(sys.argv[3]) if len(sys.argv) > 3 else 1
 
 if data_set_choice == "2024":
-    if (max_parallel_sessions < 0): 
-        print("max_parallel_sessions must more than 9")
-        sys.exit(1) 
+    if max_parallel_sessions < 9:
+        print("max_parallel_sessions must be more than 9")
+        sys.exit(1)
     else:
         from Data.ROADEF2024 import conference_sessions, slots, papers_range, working_groups, np, npMax, session_groups
 elif data_set_choice == "2023":
-    if (max_parallel_sessions < 0): 
+    if max_parallel_sessions < 12:
         print("max_parallel_sessions must be more than 12")
-        sys.exit(1) 
+        sys.exit(1)
     else:
-        from Data.ROADEF2023 import conference_sessions, slots, papers_range, working_groups, np, npMax, session_groups 
+        from Data.ROADEF2023 import conference_sessions, slots, papers_range, working_groups, np, npMax, session_groups
 elif data_set_choice == "2022":
-    if (max_parallel_sessions < 0): 
+    if max_parallel_sessions < 11:
         print("max_parallel_sessions must be more than 11")
-        sys.exit(1) 
+        sys.exit(1)
     else:
-        from Data.ROADEF2022 import conference_sessions, slots, papers_range, working_groups, np, npMax, session_groups 
+        from Data.ROADEF2022 import conference_sessions, slots, papers_range, working_groups, np, npMax, session_groups
 elif data_set_choice == "2021":
-    if (max_parallel_sessions < 0): 
+    if max_parallel_sessions < 5:
         print("max_parallel_sessions must be more than 5")
-        sys.exit(1) 
+        sys.exit(1)
     else:
-        from Data.ROADEF2021 import conference_sessions, slots, papers_range, working_groups, np, npMax, session_groups  
+        from Data.ROADEF2021 import conference_sessions, slots, papers_range, working_groups, np, npMax, session_groups
 else:
     print("The data available for 2024, 2023, 2022, and 2021 only")
     sys.exit(1)
@@ -60,7 +63,12 @@ mdl = Model()
 # Decision Variables
 x = {(s, c, l): mdl.binary_var(name=f'x_{s}_{c}_{l}') for s in Sessions for c in Slots for l in PaperRangeIndex}
 y = mdl.binary_var_dict(((s1, s2, c, g) for s1 in Sessions for s2 in Sessions if s1 < s2 for c in Slots for g in Groups), name="y")
-z = {(s, c): mdl.binary_var(name=f'z_{s}_{c}') for s in Sessions for c in Slots}
+
+if isWithZ:
+    z = {(s, c): mdl.binary_var(name=f'z_{s}_{c}') for s in Sessions for c in Slots}
+else:
+    z = {}
+
 session_allocated = mdl.binary_var_matrix(Sessions, Slots, name="session_allocated")
 
 # Objective Function: Minimize working-group conflicts
@@ -84,16 +92,21 @@ for s in Sessions:
                 mdl.add_constraint(x[s, c, l] == 0)
 
 # Fourth Constraint: Number of parallel sessions is not exceeded for each slot
-for c in Slots:
-    mdl.add_constraint(mdl.sum(z[s, c] for s in Sessions) <= max_parallel_sessions)
-
-# Implementing equivalence transformation for z variables
-for s in Sessions:
+if isWithZ:
     for c in Slots:
-        z_var = z[s, c]
-        x_vars = [x[s, c, l] for l in PaperRangeIndex]
-        mdl.add_constraints(x_var <= z_var for x_var in x_vars)
-        mdl.add_constraint(z_var <= mdl.sum(x_var for x_var in x_vars))
+        mdl.add_constraint(mdl.sum(z[s, c] for s in Sessions) <= max_parallel_sessions)
+else:
+    for c in Slots:
+        mdl.add_constraint(mdl.sum(mdl.sum(x[s, c, l] for l in PaperRangeIndex) for s in Sessions) <= max_parallel_sessions)
+
+# Implementing equivalence transformation for z variables if isWithZ is True
+if isWithZ:
+    for s in Sessions:
+        for c in Slots:
+            z_var = z[s, c]
+            x_vars = [x[s, c, l] for l in PaperRangeIndex]
+            mdl.add_constraints(x_var <= z_var for x_var in x_vars)
+            mdl.add_constraint(z_var <= mdl.sum(x_var for x_var in x_vars))
 
 # Conflict constraints similar to Max-SAT with integer y_var
 for s1 in Sessions:
@@ -103,14 +116,27 @@ for s1 in Sessions:
             for c in Slots:
                 for g in common_groups:
                     y_var = y[s1, s2, c, g]
-                    # Conflict when both sessions are in the same slot
-                    mdl.add_constraint(y_var >= z[s1, c] + z[s2, c] - 1)
-                    for l1 in PaperRangeIndex:
-                        for l2 in PaperRangeIndex:
-                            # Conflict when both sessions have papers in the same slot
-                            mdl.add_constraint(y_var >= x[s1, c, l1] + x[s2, c, l2] - 1)
+                    if isWithZ:
+                        # Conflict when both sessions are in the same slot
+                        mdl.add_constraint(y_var >= z[s1, c] + z[s2, c] - 1)
+                    else:
+                        for l1 in PaperRangeIndex:
+                            for l2 in PaperRangeIndex:
+                                # Conflict when both sessions have papers in the same slot
+                                mdl.add_constraint(y_var >= x[s1, c, l1] + x[s2, c, l2] - 1)
 
 # Solve the model
+
+# Specific Constraint for Session 34: only assign to slots 5, 6, or 7
+if data_set_choice == "2024":
+    if isWithZ:
+        for c in [1, 2, 3, 4]:
+            mdl.add_constraint(z[34, c] == 0)
+    else:
+        for c in [1, 2, 3, 4]:
+            for l in PaperRangeIndex:
+                mdl.add_constraint(x[34, c, l] == 0)
+
 solution = mdl.solve()
 
 # Display function
