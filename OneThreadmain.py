@@ -136,8 +136,8 @@ if data_set_choice == "2024":
         for c in [1, 2, 3, 4]:
             for l in PaperRangeIndex:
                 mdl.add_constraint(x[34, c, l] == 0)
-                
 
+mdl.context.cplex_parameters.threads = 1 
 solution = mdl.solve()
 
 # Display function
