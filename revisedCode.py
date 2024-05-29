@@ -97,7 +97,7 @@ if isWithZ:
         mdl.add_constraint(mdl.sum(z[s, c] for s in Sessions) >= len(Sessions) - max_parallel_sessions )
 else:
     for c in Slots:
-        mdl.add_constraint(mdl.sum(mdl.sum(x[s, c, l] for l in PaperRangeIndex) for s in Sessions) <= max_parallel_sessions)
+        mdl.add_constraint(mdl.sum(mdl.sum(x[s, c, l] for l in PaperRangeIndex) for s in Sessions) <= len(Sessions) - max_parallel_sessions)
 
 # Implementing equivalence transformation for z variables if isWithZ is True
 
@@ -125,8 +125,10 @@ for s1 in Sessions:
                         # Conflict when both sessions are in the same slot
                         mdl.add_constraint(y_var + z[s1, c] + z[s2, c] >= 1)
                     else:
+                        for l1 in PaperRangeIndex:
+                            for l2 in PaperRangeIndex:
                         # Conflict when both sessions have papers in the same slot
-                        mdl.add_constraint(y_var + z[s1, c] + z[s2, c] >= 1)
+                                mdl.add_constraint(y_var - x[s1, c,l1] - x[s2, c,l2] >= -1)
                         # mdl.add_constraint(y_var  -x[s1, c ,l]) - x[s2, c,] >= -1 for l in PaperRangeIndex)
 
 # Solve the model
