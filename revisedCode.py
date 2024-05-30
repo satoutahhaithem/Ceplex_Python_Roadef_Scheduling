@@ -97,7 +97,7 @@ if isWithZ:
         mdl.add_constraint(mdl.sum(z[s, c] for s in Sessions) >= len(Sessions) - max_parallel_sessions )
 else:
     for c in Slots:
-        mdl.add_constraint(mdl.sum(mdl.sum(x[s, c, l] for l in PaperRangeIndex) for s in Sessions) <= len(Sessions) - max_parallel_sessions)
+        mdl.add_constraint(mdl.sum(mdl.sum(x[s, c, l] for l in PaperRangeIndex) for s in Sessions) <= max_parallel_sessions)
 
 # Implementing equivalence transformation for z variables if isWithZ is True
 
